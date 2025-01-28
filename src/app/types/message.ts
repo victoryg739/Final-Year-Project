@@ -1,5 +1,4 @@
 export type Message = {
-    id: number;
-    text: string;
-    sender: 'user' | 'assistant';
+    role: 'user' | 'assistant' | 'system';
+    content: string;
 };

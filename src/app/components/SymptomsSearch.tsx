@@ -2,6 +2,8 @@ import React from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation"; // Import useRouter from next/navigation
 import { symptomsTemplate } from "../../../utils/prompts";
+import { IoMdRefresh } from "react-icons/io"; // Spinner icon from react-icons
+import { IoIosSearch } from "react-icons/io";
 
 const SymptomsSearch = ({ setSymptoms }) => {
   const [description, setDescription] = useState([]);
@@ -55,18 +57,29 @@ const SymptomsSearch = ({ setSymptoms }) => {
       <main className="flex flex-col items-center w-full max-w-xl">
         <textarea
           placeholder="Type here!"
-          className="w-full h-32 p-4 border-2 border-red-500 rounded-md text-black"
+          className="w-full h-32 p-4 border-2 border-blue-600 rounded-md text-black"
           onChange={(e) => setDescription(e.target.value)}
         ></textarea>
         <p className="text-sm text-gray-400 mt-2">
-          For best results, indicate when and why you think the symptoms appeared.
+          For the best results, please describe the symptoms and how long they have persisted.
         </p>
         {error && <div className="text-red-500 mt-1">Description must be at least 12 characters long.</div>}
         <button
-          className="mt-4 px-6 py-2  bg-red-500 text-white rounded-md hover:bg-red-600"
+          className="mt-4 px-5 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 disabled:cursor-not-allowed"
           onClick={() => handleSubmit()}
+          disabled={loading} // Disable button while loading
         >
-          Search
+          {loading ? (
+            <div className="flex items-center justify-center">
+              <IoMdRefresh className="animate-spin text-white mr-2" />
+              <span>Processing...</span>
+            </div>
+          ) : (
+            <div className="flex items-center justify-center">
+              <span>Search</span>
+              <IoIosSearch className="text-white ml-2" />
+            </div>
+          )}
         </button>
       </main>
     </div>

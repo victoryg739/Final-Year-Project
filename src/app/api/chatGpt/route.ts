@@ -21,7 +21,8 @@ export async function POST(req: NextRequest) {
             model: "gpt-4o", // Correct model name (e.g., "gpt-4" or "gpt-3.5-turbo")
             messages: body.gptMessages, // Pass the messages array
         });
-
+        console.log(body.gptMessages)
+    
         console.log("OpenAI Response:", completion.choices);
 
         // Add the assistant's response to the conversation

@@ -9,6 +9,7 @@ export default function Page() {
   useEffect(() => {
     // Retrieve data from sessionStorage
     const storedData = sessionStorage.getItem("chatData");
+
     if (storedData) {
       setDiagnosis(JSON.parse(storedData));
     } else {
@@ -16,7 +17,7 @@ export default function Page() {
     }
   }, []);
 
-  console.log(diagnosis);
+
   if (!diagnosis) {
     // Render a loading state while waiting for diagnosis
     return <div>Loading...</div>;

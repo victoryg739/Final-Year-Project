@@ -2,17 +2,25 @@ import React, { useState, useRef, useEffect } from "react";
 import MessageBubble from "./MessageBubble";
 import { Message } from "../types/message";
 import { IoMdSend } from "react-icons/io";
+import { IoMdRefresh } from "react-icons/io"; // Import the spinner icon
 
 const Chat: React.FC = ({ diagnosis }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
-      id: 1,
-      text: diagnosis[diagnosis.length - 1]["content"],
-      sender: "assistant",
+      role: "assistant",
+      content: diagnosis[diagnosis.length - 1]["content"],
     },
   ]);
-  const [newMessage, setNewMessage] = useState("");
 
+  const [newMessage, setNewMessage] = useState("");
+  const [gptMessages, setGptMessages] = useState<Message[]>(
+    diagnosis.map((msg) => ({
+      role: msg.role,
+      content: msg.content,
+    }))
+  );
+
+  const [loading, setLoading] = useState(false); // Add a loading state
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToBottom = () => {
@@ -27,49 +35,41 @@ const Chat: React.FC = ({ diagnosis }) => {
     if (newMessage.trim() === "") return;
 
     const userMessage: Message = {
-      id: messages.length + 1,
-      text: newMessage,
-      sender: "user",
+      role: "user",
+      content: newMessage,
     };
 
+    setGptMessages((prevGptMessages) => [...prevGptMessages, userMessage]);
     setMessages((prevMessages) => [...prevMessages, userMessage]);
     setNewMessage("");
+    setLoading(true); // Set loading to true when the request is sent
 
-    // Prepare messages for API
-    const gptMessages = messages.map((msg) => ({
-      role: msg.sender === "user" ? "user" : "assistant",
-      content: msg.text,
-    }));
+    try {
+      const response = await fetch("/api/chatGpt", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ gptMessages: [...gptMessages, userMessage] }),
+      });
 
-    // Include the latest user message
-    gptMessages.push({ role: "user", content: newMessage });
+      const gptResponse: Message[] = await response.json();
 
-    const response = await fetch("/api/chatGpt", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ gptMessages }),
-    });
-    // Get the updated conversation from the API
-    const allMessages = await response.json();
-
-    // Update the state with all messages
-    setMessages(
-      allMessages.map((msg, index) => ({
-        id: index + 1,
-        text: msg.content,
-        sender: msg.role === "user" ? "user" : "assistant",
-      }))
-    );
+      setMessages(gptResponse.slice(2));
+      setGptMessages(gptResponse);
+    } catch (error) {
+      console.error("Error sending message:", error);
+    } finally {
+      setLoading(false); // Set loading to false when the request completes
+    }
   };
 
   return (
     <div className="flex flex-col h-screen">
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 bg-gray-100">
-        {messages.map((message) => (
-          <MessageBubble key={message.id} message={message} />
+        {messages.map((message, index) => (
+          <MessageBubble key={index} message={message} />
         ))}
         <div ref={messagesEndRef} />
       </div>
@@ -87,12 +87,23 @@ const Chat: React.FC = ({ diagnosis }) => {
               if (e.key === "Enter") handleSendMessage();
             }}
           />
-          <div className="flex items-center rounded-xl bg-blue-500 py-1 px-2">
-            <IoMdSend className="text-white" />
-            <button className="text-white font-medium ml-2" onClick={handleSendMessage}>
-              Send
-            </button>
-          </div>
+          <button
+            className="flex items-center rounded-xl bg-blue-500 py-1 px-2 disabled:cursor-not-allowed"
+            onClick={handleSendMessage}
+            disabled={loading} // Disable the button while loading
+          >
+            {loading ? (
+              <>
+                <IoMdRefresh className="animate-spin text-white mr-2" />
+                <span className="text-white">Sending...</span>
+              </>
+            ) : (
+              <>
+                <IoMdSend className="text-white" />
+                <span className="text-white font-medium ml-2">Send</span>
+              </>
+            )}
+          </button>
         </div>
       </div>
     </div>
