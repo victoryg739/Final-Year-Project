@@ -19,7 +19,6 @@ export default function Page() {
 
 
   if (!diagnosis) {
-    // Render a loading state while waiting for diagnosis
     return <div>Loading...</div>;
   }
 

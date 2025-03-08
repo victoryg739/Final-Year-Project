@@ -5,6 +5,9 @@ import { IoMdSend } from "react-icons/io";
 import { IoMdRefresh } from "react-icons/io"; // Import the spinner icon
 
 const Chat: React.FC = ({ diagnosis }) => {
+  const cleanHtmlContent = (content: string) => {
+    return content.replace(/```html\n|```/g, "").trim();
+  };
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
@@ -16,7 +19,7 @@ const Chat: React.FC = ({ diagnosis }) => {
   const [gptMessages, setGptMessages] = useState<Message[]>(
     diagnosis.map((msg) => ({
       role: msg.role,
-      content: msg.content,
+      content: msg.role === "assistant" ? cleanHtmlContent(msg.content) : msg.content,
     }))
   );
 
@@ -67,7 +70,7 @@ const Chat: React.FC = ({ diagnosis }) => {
   return (
     <div className="flex flex-col h-screen">
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 bg-gray-100">
+      <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
         {messages.map((message, index) => (
           <MessageBubble key={index} message={message} />
         ))}
@@ -90,7 +93,7 @@ const Chat: React.FC = ({ diagnosis }) => {
           <button
             className="flex items-center rounded-xl bg-blue-500 py-1 px-2 disabled:cursor-not-allowed"
             onClick={handleSendMessage}
-            disabled={loading} // Disable the button while loading
+            disabled={loading}
           >
             {loading ? (
               <>

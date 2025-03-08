@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Image from "next/image";
+import drPoppy from "/public/dr_poppy.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,21 +10,31 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 mr-20 sm:px-6 lg:px-8 rounded-lg">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
-            <a href="/" className="text-xl font-bold text-gray-800">
+            <div className="flex items-center">
+              <Image
+                src={drPoppy}
+                alt="Dr Poppy"
+                width={60}
+                height={60}
+                className="bg-blue-300 p-1.5 rounded-3xl mr-2"
+              />
+              <div className="font-extrabold text-xl"> Poppy AI</div>
+            </div>
+            {/* <a href="/" className="text-xl font-bold text-gray-800">
               MyLogo
-            </a>
+            </a> */}
           </div>
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
               <a href="/" className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-                Home
-              </a>
-              <a href="/diagnosis" className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-                Disease Diagnoses
+                Disease Diagnosis
               </a>
 
-              <a href="/chat" className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-                General Chatbot
+              <a
+                href="/ai-psychiatrist"
+                className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+              >
+                AI Psychatrist
               </a>
             </div>
           </div>
@@ -56,25 +68,13 @@ const Navbar = () => {
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <a href="/" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium">
-              Home
+              Disease Diagnosis
             </a>
             <a
-              href="/about"
+              href="/ai-psychiatrist"
               className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium"
             >
-              About
-            </a>
-            <a
-              href="/services"
-              className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium"
-            >
-              Services
-            </a>
-            <a
-              href="/contact"
-              className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium"
-            >
-              Contact
+              AI Psychatrist
             </a>
           </div>
         </div>

@@ -39,13 +39,10 @@ export const symptomsTemplate = `Based on the provided symptoms, please generate
 - Use numbered ranks (e.g., 1, 2, 3...) to display the diagnoses.
 - Include proper HTML tags for semantic structure (e.g., <h1> for the diagnosis name, <ul> for bulleted lists).
 
-### Important Note
-- This important note applies to all subsequent responses. This chatbot is designed to answer **only healthcare-related questions**. If the questions are not related to healthcare, the chatbot should not respond.
-
 ### Example Response in HTML
 
-<ol class="list-decimal pl-4 space-y-6">
-  <li class="space-y-4">
+<ol class="list-decimal space-y-8">
+  <li class="space-y-4 p-4">
     <h1 class="text-2xl font-bold text-gray-800">Fatigue</h1>
     <p><strong class="font-semibold">Relevance:</strong> 92%</p>
     <p><strong class="font-semibold">Description:</strong> Extreme tiredness often caused by lack of rest, stress, or illness.</p>
@@ -58,7 +55,7 @@ export const symptomsTemplate = `Based on the provided symptoms, please generate
     <p><strong class="font-semibold">Severity:</strong> <span class="text-yellow-500">🟡 Moderate</span></p>
     <p><strong class="font-semibold">Next Steps:</strong> Monitor your energy levels. Consider seeing a doctor if it persists.</p>
   </li>
-  <li class="space-y-4">
+  <li class="space-y-4 p-4">
     <h1 class="text-2xl font-bold text-gray-800">Cough</h1>
     <p><strong class="font-semibold">Relevance:</strong> 85%</p>
     <p><strong class="font-semibold">Description:</strong> A reflex action to clear your airways of mucus or irritants.</p>

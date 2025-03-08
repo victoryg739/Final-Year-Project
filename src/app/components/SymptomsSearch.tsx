@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation"; // Import useRouter from next/navig
 import { symptomsTemplate } from "../../../utils/prompts";
 import { IoMdRefresh } from "react-icons/io"; // Spinner icon from react-icons
 import { IoIosSearch } from "react-icons/io";
+import Image from "next/image";
+import drPoppy from "/public/dr_poppy.png";
 
 const SymptomsSearch = ({ setSymptoms }) => {
   const [description, setDescription] = useState([]);
@@ -52,9 +54,12 @@ const SymptomsSearch = ({ setSymptoms }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center justify-center mt-8">
+      <Image src={drPoppy} alt="Dr Poppy" width={260} height={260} />
       {/* Main content */}
-      <main className="flex flex-col items-center w-full max-w-xl">
+      {/* Input */}
+
+      <main className="flex flex-col items-center w-full max-w-xl mt-10">
         <textarea
           placeholder="Type here!"
           className="w-full h-32 p-4 border-2 border-blue-600 rounded-md text-black"
@@ -65,7 +70,7 @@ const SymptomsSearch = ({ setSymptoms }) => {
         </p>
         {error && <div className="text-red-500 mt-1">Description must be at least 12 characters long.</div>}
         <button
-          className="mt-4 px-5 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 disabled:cursor-not-allowed"
+          className="mt-4 mb-10 px-5 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 disabled:cursor-not-allowed"
           onClick={() => handleSubmit()}
           disabled={loading} // Disable button while loading
         >

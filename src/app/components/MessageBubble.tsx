@@ -27,12 +27,12 @@ const MessageBubble: React.FC<Props> = ({ message }) => {
         {!isUser && (
           <div className="mr-2">
             {/* Assistant Avatar */}
-            <div className="h-8 w-8 rounded-full bg-green-500 text-white flex items-center justify-center">A</div>
+            <div className="h-8 w-8 rounded-full bg-gray-400 text-white flex items-center justify-center">Dr</div>
           </div>
         )}
         <div
           className={`px-4 py-2 rounded-lg ${
-            isUser ? "bg-blue-500 text-white rounded-br-none" : "bg-gray-200 text-gray-800 rounded-lg"
+            isUser ? "bg-blue-500 text-white rounded-br-none" : "bg-gray-100 text-gray-800 rounded-lg"
           }`}
         >
           {/* Clean and render the sanitized HTML */}
