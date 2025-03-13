@@ -1,82 +1,121 @@
-import React, { useState } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import drPoppy from "/public/dr_poppy.png";
+import { getUserFromToken } from "../../../utils/auth";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
+
+  // Check if user is logged in
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await fetch("/api/auth/status");
+        const data = await res.json();
+        console.log(data);
+        setIsLoggedIn(data.isLoggedIn);
+      } catch (error) {
+        console.error("Error checking auth:", error);
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  // Handle logout
+  const handleLogout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    setIsLoggedIn(false);
+    router.push("/");
+  };
 
   return (
     <nav className="bg-white shadow-md">
-      <div className="max-w-7xl mx-auto px-4 mr-20 sm:px-6 lg:px-8 rounded-lg">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex-shrink-0">
-            <div className="flex items-center">
-              <Image
-                src={drPoppy}
-                alt="Dr Poppy"
-                width={60}
-                height={60}
-                className="bg-blue-300 p-1.5 rounded-3xl mr-2"
-              />
-              <div className="font-extrabold text-xl"> Poppy AI</div>
-            </div>
-            {/* <a href="/" className="text-xl font-bold text-gray-800">
-              MyLogo
-            </a> */}
+          {/* Logo */}
+          <div className="flex items-center">
+            <Image src={drPoppy} alt="Dr Poppy" width={50} height={50} className="bg-blue-300 p-1.5 rounded-3xl mr-2" />
+            <span className="font-extrabold text-xl">Poppy AI</span>
           </div>
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
-              <a href="/" className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-                Disease Diagnosis
-              </a>
 
-              <a
-                href="/ai-psychiatrist"
-                className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
-              >
-                AI Psychatrist
+          {/* Desktop Menu */}
+          <div className="hidden md:flex space-x-8 items-center ">
+            <a href="/" className="text-gray-700 hover:text-gray-900 text-sm font-medium">
+              Disease Diagnosis
+            </a>
+            <a href="/ai-psychiatrist" className="text-gray-700 hover:text-gray-900 text-sm font-medium">
+              AI Psychiatrist
+            </a>
+            <a href="/settings" className="text-gray-700 hover:text-gray-900 text-sm font-medium">
+              Settings
+            </a>
+            {isLoggedIn ? (
+              <button onClick={handleLogout} className="bg-red-400 text-white px-4 py-2 rounded-md text-sm font-medium">
+                Logout
+              </button>
+            ) : (
+              <a href="/sign-in" className="bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium">
+                Login
               </a>
-            </div>
+            )}
           </div>
-          <div className="-mr-2 flex md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none"
+          >
+            <svg
+              className="h-6 w-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
             >
-              <svg
-                className="h-6 w-6"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
-                />
-              </svg>
-            </button>
-          </div>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+              />
+            </svg>
+          </button>
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <a href="/" className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium">
-              Disease Diagnosis
-            </a>
-            <a
-              href="/ai-psychiatrist"
-              className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium"
+        <div className="md:hidden px-4 py-3 space-y-2">
+          <a href="/" className="block text-gray-700 hover:text-gray-900 text-base font-medium">
+            Disease Diagnosis
+          </a>
+          <a href="/ai-psychiatrist" className="block text-gray-700 hover:text-gray-900 text-base font-medium">
+            AI Psychiatrist
+          </a>
+          <a href="/settings" className="block text-gray-700 hover:text-gray-900 text-base font-medium">
+            Settings
+          </a>
+          {isLoggedIn ? (
+            <button
+              onClick={handleLogout}
+              className="w-full bg-red-400 text-white px-4 py-2 rounded-md text-base font-medium"
             >
-              AI Psychatrist
+              Logout
+            </button>
+          ) : (
+            <a
+              href="/sign-in"
+              className="block bg-blue-500 text-white px-4 py-2 rounded-md text-base font-medium text-center"
+            >
+              Login
             </a>
-          </div>
+          )}
         </div>
       )}
     </nav>

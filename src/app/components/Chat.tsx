@@ -25,7 +25,25 @@ const Chat: React.FC = ({ diagnosis }) => {
 
   const [loading, setLoading] = useState(false); // Add a loading state
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const [openAiApiKey, setOpenAiApiKey] = useState("");
 
+  useEffect(() => {
+    async function fetchUsername() {
+      const res = await fetch("/api/auth/status");
+      const data = await res.json();
+      if (data.isLoggedIn) {
+        const res = await fetch(`/api/settings?username=${data.user.username}`);
+        const dataSettings = await res.json();
+
+        if (dataSettings && dataSettings.openAiApiKey) {
+          setOpenAiApiKey(dataSettings.openAiApiKey);
+        }
+      }
+    }
+
+    fetchUsername();
+  }, []);
+  console.log(openAiApiKey);
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -45,15 +63,17 @@ const Chat: React.FC = ({ diagnosis }) => {
     setGptMessages((prevGptMessages) => [...prevGptMessages, userMessage]);
     setMessages((prevMessages) => [...prevMessages, userMessage]);
     setNewMessage("");
-    setLoading(true); // Set loading to true when the request is sent
-
+    setLoading(true);
     try {
       const response = await fetch("/api/chatGpt", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ gptMessages: [...gptMessages, userMessage] }),
+        body: JSON.stringify({
+          gptMessages: [...gptMessages, userMessage],
+          openAiApiKey: openAiApiKey, // Send the username here
+        }),
       });
 
       const gptResponse: Message[] = await response.json();
@@ -63,14 +83,14 @@ const Chat: React.FC = ({ diagnosis }) => {
     } catch (error) {
       console.error("Error sending message:", error);
     } finally {
-      setLoading(false); // Set loading to false when the request completes
+      setLoading(false);
     }
   };
 
   return (
     <div className="flex flex-col h-screen">
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
+      <div className="flex-1 overflow-y-auto p-4 bg-blue-100">
         {messages.map((message, index) => (
           <MessageBubble key={index} message={message} />
         ))}

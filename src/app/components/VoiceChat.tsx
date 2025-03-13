@@ -2,28 +2,25 @@ import React, { useState, useRef, useEffect } from "react";
 import useWebRTCAudioSession from "../../../utils/use-webrtc";
 import Image from "next/image";
 import drPoppy from "/public/dr_poppy.png";
-import { FaMicrophone } from "react-icons/fa";
-import { FaStopCircle } from "react-icons/fa";
+import { FaMicrophone, FaStopCircle } from "react-icons/fa";
 
 export default function VoiceChat() {
-  const { status, isSessionActive, handleStartStopClick, sendTextMessage } = useWebRTCAudioSession("alloy", []);
-  const videoRef = useRef(null); // Reference to control the video element
+  const { status, isSessionActive, handleStartStopClick, sendTextMessage, responseDelay, setResponseDelay } =
+    useWebRTCAudioSession("alloy", []);
+  const videoRef = useRef(null);
 
-  // Ensure video loops and plays when session is active
   useEffect(() => {
     if (videoRef.current) {
-      if (isSessionActive) {
-        videoRef.current.play(); // Start playing when session is active
-      } else {
-        videoRef.current.pause(); // Pause when session is inactive
-        videoRef.current.currentTime = 0; // Reset to start
+      if (isSessionActive) videoRef.current.play();
+      else {
+        videoRef.current.pause();
+        videoRef.current.currentTime = 0;
       }
     }
   }, [isSessionActive]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      {/* Static image shown when inactive, hidden when active */}
       <Image
         src={drPoppy}
         alt="Dr Poppy"
@@ -31,7 +28,6 @@ export default function VoiceChat() {
         height={260}
         style={{ display: isSessionActive ? "none" : "block" }}
       />
-      {/* Animated video shown when active, hidden when inactive */}
       <video
         ref={videoRef}
         src="/dr_poppy_speech.mp4"
@@ -42,10 +38,7 @@ export default function VoiceChat() {
         muted
         playsInline
         preload="auto"
-        style={{
-          display: isSessionActive ? "block" : "none",
-          clipPath: "inset(0px 0px 10px 0px)",
-        }}
+        style={{ display: isSessionActive ? "block" : "none", clipPath: "inset(0px 0px 10px 0px)" }}
       />
       <h1 className="text-3xl font-semibold text-blue-600 mb-6 mt-4">Hi, I am Dr Poppy</h1>
       <p className="text-gray-700 mb-10 px-12">
@@ -63,7 +56,7 @@ export default function VoiceChat() {
       <p className="mt-4 text-sm text-gray-600 flex items-center justify-center">
         <span className={`w-2 h-2 rounded-full mr-2 ${isSessionActive ? "bg-green-500" : "bg-red-500"}`}></span>
         Status: {status}
-      </p>{" "}
+      </p>
     </div>
   );
 }
