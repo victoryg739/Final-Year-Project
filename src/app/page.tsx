@@ -1,10 +1,8 @@
 "use client";
 import Navbar from "./components/Navbar";
 import SymptomsSearch from "./components/SymptomsSearch";
-import { useState } from "react";
 
 export default function Home() {
-
   return (
     <div>
       <Navbar />
