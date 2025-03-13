@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { getUserFromToken } from "../utils/auth";
 export async function middleware(req: NextRequest) {
     const token = req.cookies.get("token")?.value; // Get token from cookies
 

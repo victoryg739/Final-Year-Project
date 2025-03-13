@@ -1,11 +1,9 @@
 "use client";
-import Image from "next/image";
 import Navbar from "./components/Navbar";
 import SymptomsSearch from "./components/SymptomsSearch";
 import { useState } from "react";
 
 export default function Home() {
-  const [symptoms, setSymptoms] = useState([]);
 
   return (
     <div>
@@ -18,7 +16,7 @@ export default function Home() {
             you feel understood and cared for!
           </p>
         </div>
-        <SymptomsSearch setSymptoms={setSymptoms} />
+        <SymptomsSearch />
       </div>
     </div>
   );

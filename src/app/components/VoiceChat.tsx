@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, {  useRef, useEffect } from "react";
 import useWebRTCAudioSession from "../../../utils/use-webrtc";
 import Image from "next/image";
 import drPoppy from "/public/dr_poppy.png";
 import { FaMicrophone, FaStopCircle } from "react-icons/fa";
 
 export default function VoiceChat() {
-  const { status, isSessionActive, handleStartStopClick, sendTextMessage, responseDelay, setResponseDelay } =
+  const { status, isSessionActive, handleStartStopClick } =
     useWebRTCAudioSession("alloy", []);
   const videoRef = useRef(null);
 

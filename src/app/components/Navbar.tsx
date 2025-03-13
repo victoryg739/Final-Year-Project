@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import drPoppy from "/public/dr_poppy.png";
-import { getUserFromToken } from "../../../utils/auth";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);

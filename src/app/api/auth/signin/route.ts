@@ -41,6 +41,7 @@ export async function POST(req: Request) {
         response.headers.set("Set-Cookie", cookie);
         return response;
     } catch (error) {
+        console.error("Login Error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }

@@ -6,9 +6,9 @@ import { IoIosSearch } from "react-icons/io";
 import Image from "next/image";
 import drPoppy from "/public/dr_poppy.png";
 
-const SymptomsSearch = ({ setSymptoms }) => {
+const SymptomsSearch = () => {
   const [description, setDescription] = useState("");
-  const [error, setError] = useState(""); // Change error state to hold messages
+  const [error, setError] = useState(""); 
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [openAiApiKey, setOpenAiApiKey] = useState("");

@@ -22,6 +22,7 @@ export async function GET(req: Request) {
 
         return NextResponse.json(settings);
     } catch (error) {
+        console.error("Login Error:", error);
         return NextResponse.json({ error: "Failed to fetch settings" }, { status: 500 });
     }
 }
@@ -49,6 +50,7 @@ export async function PUT(req: Request) {
 
         return NextResponse.json(updatedSettings);
     } catch (error) {
+        console.error("Login Error:", error);
         return NextResponse.json({ error: "Failed to update settings" }, { status: 500 });
     }
 }
