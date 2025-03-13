@@ -30,12 +30,12 @@ jobs:
       # - name: Run Tests
       #   run: npm test
 
-  deploy:
-    needs: build_and_test # Only deploy if tests pass
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+  # deploy:
+  #   needs: build_and_test # Only deploy if tests pass
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Code
+  #       uses: actions/checkout@v4
 
-      - name: Deploy to Vercel
-        run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
+  #     - name: Deploy to Vercel
+  #       run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
