@@ -32,8 +32,8 @@ interface UseWebRTCAudioSessionReturn {
     currentVolume: number;
     conversation: Conversation[];
     sendTextMessage: (text: string) => void;
-    responseDelay: number;           // New: Expose response delay value
-    setResponseDelay: (value: number) => void; // New: Expose setter
+    responseDelay: number;          
+    setResponseDelay: (value: number) => void;
 }
 
 export default function useWebRTCAudioSession(
@@ -72,8 +72,8 @@ export default function useWebRTCAudioSession(
                 },
                 turn_detection: {
                     type: "server_vad",
-                    threshold: 0.5,          // Sensitivity of voice detection
-                    prefix_padding_ms: 300,  // Audio padding before speech
+                    threshold: 0.5,          
+                    prefix_padding_ms: 300, 
                     silence_duration_ms: responseDelay, // Duration of silence before response
                 },
             },
@@ -139,7 +139,7 @@ export default function useWebRTCAudioSession(
                         isFinal: true,
                         status: "final",
                     });
-                    console.log("User said:", msg.transcript);  // Logs the user's final speech
+                    console.log("User said:", msg.transcript);
                     clearEphemeralUserMessage();
                     break;
                 }

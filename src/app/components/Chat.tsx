@@ -2,9 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 import MessageBubble from "./MessageBubble";
 import { Message } from "../types/message";
 import { IoMdSend } from "react-icons/io";
-import { IoMdRefresh } from "react-icons/io"; // Import the spinner icon
+import { IoMdRefresh } from "react-icons/io";
 
-const Chat: React.FC = ({ diagnosis }) => {
+const Chat: React.FC = ({ diagnosis }: any) => {
   const cleanHtmlContent = (content: string) => {
     return content.replace(/```html\n|```/g, "").trim();
   };
@@ -43,7 +43,6 @@ const Chat: React.FC = ({ diagnosis }) => {
 
     fetchUsername();
   }, []);
-  console.log(openAiApiKey);
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };

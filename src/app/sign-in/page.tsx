@@ -1,7 +1,7 @@
 "use client";
 /* eslint-disable react/no-unescaped-entities */
 import { useState } from "react";
-import Link from "next/link"; // Import Link for navigation
+import Link from "next/link"; 
 import Navbar from "../components/Navbar";
 import { useRouter } from "next/navigation";
 
@@ -9,7 +9,7 @@ export default function SignIn() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const router = useRouter(); // Router for navigation
+  const router = useRouter(); 
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();

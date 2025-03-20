@@ -1,11 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
+import { useRouter } from "next/navigation";
 
 export default function SettingsPage() {
   const [responseDelay, setResponseDelay] = useState(2000);
   const [openAiApiKey, setOpenAiApiKey] = useState("");
   const [username, setUsername] = useState(""); // Initially empty username state
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchUser() {
@@ -15,8 +18,6 @@ export default function SettingsPage() {
     }
     fetchUser();
   }, []);
-
-  console.log(username);
 
   useEffect(() => {
     if (username) {
@@ -46,16 +47,28 @@ export default function SettingsPage() {
     }
   };
 
+  const handleDeleteAccount = async () => {
+    const res = await fetch("/api/auth/delete-account", {
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+      alert("Account deleted successfully.");
+      // Redirect to homepage
+      router.push("/");
+    } else {
+      alert("Failed to delete account.");
+    }
+  };
+
   return (
     <div>
       <Navbar />
       <div className="max-w-md mx-auto p-6 mt-10">
-        <h2 className="text-2xl font-semibold mb-12 text-center"> Settings</h2>
+        <h2 className="text-2xl font-semibold mb-12 text-center">Settings</h2>
 
         <div className="mt-6 mb-6 w-full">
-          <label htmlFor="responseDelay" className="">
-            Response Delay (ms): {responseDelay}
-          </label>
+          <label htmlFor="responseDelay">Response Delay (ms): {responseDelay}</label>
           <input
             type="range"
             id="responseDelay"
@@ -78,6 +91,32 @@ export default function SettingsPage() {
         <button onClick={handleSave} className="w-full bg-blue-500 text-white p-2 rounded mt-10">
           Save Settings
         </button>
+
+        <button
+          onClick={() => setShowDeleteConfirmation(true)}
+          className="w-full bg-red-700 text-white p-2 rounded mt-6"
+        >
+          Delete Account
+        </button>
+
+        {showDeleteConfirmation && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+            <div className="bg-white p-6 rounded-lg w-96">
+              <h3 className="text-lg font-semibold">Are you sure you want to delete your account?</h3>
+              <div className="mt-4 flex justify-end">
+                <button
+                  onClick={() => setShowDeleteConfirmation(false)}
+                  className="px-4 py-2 bg-gray-300 rounded-lg mr-4"
+                >
+                  Cancel
+                </button>
+                <button onClick={handleDeleteAccount} className="px-4 py-2 bg-red-500 text-white rounded-lg">
+                  Yes, Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

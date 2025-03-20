@@ -3,10 +3,10 @@ name: CI/CD for Next.js (Frontend & Backend)
 on:
   push:
     branches:
-      - main # Runs on pushes to 'main'
+      - main 
   pull_request:
     branches:
-      - main # Runs on PRs to 'main'
+      - main 
 
 jobs:
   build_and_test:
@@ -27,15 +27,3 @@ jobs:
       - name: Run Lint
         run: npm run lint
 
-      # - name: Run Tests
-      #   run: npm test
-
-  # deploy:
-  #   needs: build_and_test # Only deploy if tests pass
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout Code
-  #       uses: actions/checkout@v4
-
-  #     - name: Deploy to Vercel
-  #       run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }}

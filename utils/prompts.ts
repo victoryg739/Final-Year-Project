@@ -1,29 +1,3 @@
-// export const symptomsTemplate = `Based on the following symptoms, please provide:
-// - A ranked list of up to 5 potential diagnoses 
-
-// Each symptom is presented with numbered according to their rank with the following details:
-
-// Diagnosis Name: Large and bold at the top of the card.
-// Relevance Score: A percentage or rank (e.g., 85%) that indicates how closely the symptom matches the input.
-// Description: A brief explanation of the symptom.
-// Potential Causes: A bulleted list of possible causes.
-// Severity Indicator: A color-coded tag (e.g., green for mild, yellow for moderate, red for severe).
-// Example:
-// Response:
-
-// 1. Fatigue
-
-// - Relevance: 92%
-// - Description: Extreme tiredness often caused by lack of rest, stress, or illness.
-// - Potential Causes:
-//     - Sleep deprivation
-//     - Viral infection
-//     - Anemia
-// - Severity: 🟡 Moderate
-// - Next Steps: Monitor your energy levels. Consider seeing a doctor if it persists.
-
-// Please return the responses in html format`
-
 export const symptomsTemplate = `Based on the provided symptoms, please generate a ranked list of up to 5 potential diagnoses. Each diagnosis should include the following details
 
 1. **Diagnosis Name**: Displayed as a large, bold heading.

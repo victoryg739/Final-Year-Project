@@ -1,6 +1,6 @@
 import React from "react";
 import { Message } from "../types/message";
-import parse from "html-react-parser"; // Library for parsing raw HTML into React elements
+import parse from "html-react-parser"; 
 
 interface Props {
   message: Message;
@@ -35,7 +35,6 @@ const MessageBubble: React.FC<Props> = ({ message }) => {
             isUser ? "bg-blue-500 text-white rounded-br-none" : "bg-gray-100 text-gray-800 rounded-lg"
           }`}
         >
-          {/* Clean and render the sanitized HTML */}
           {parse(cleanHtml(message.content))}
         </div>
         {isUser && (

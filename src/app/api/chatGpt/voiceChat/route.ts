@@ -4,25 +4,21 @@ import { prisma } from "../../../../../utils/prisma";
 
 export async function POST() {
     try {
-        // Attempt to get the user from token (optional, can be null if no user is logged in)
         const user = await getUserFromToken();
 
-        // Fetch OpenAI API key from the database for the logged-in user (if any)
         let openAiApiKey = null;
         if (user && user.username) {
-            console.log("Authenticated user:", user.username);
 
             const userSettings = await prisma.settings.findUnique({
                 where: { username: user.username },
                 select: { openAiApiKey: true },
             });
-            console.log(userSettings?.openAiApiKey)
 
             openAiApiKey = userSettings?.openAiApiKey;
         }
+
         // If no API key is found, fallback to environment variable
         openAiApiKey = openAiApiKey || process.env.OPENAI_API_KEY;
-        console.log(openAiApiKey)
         if (!openAiApiKey) {
             throw new Error("OpenAI API key is missing in both DB and environment variables.");
         }
@@ -38,7 +34,7 @@ export async function POST() {
                 model: "gpt-4o-mini-realtime-preview-2024-12-17",
                 voice: "alloy",
                 modalities: ["audio", "text"],
-                instructions: "You are Dr. Poppy, an empathetic AI counselor specializing in Cognitive Behavioral Therapy (CBT), psychology, and therapy. Respond only to questions and topics related to mental health, CBT techniques, psychological well-being, and therapeutic guidance. Always maintain a warm, supportive, and empathetic tone, addressing the user as 'friend' or 'dear.' If a question is unrelated, politely redirect the user to focus on mental health or therapy topics, saying, 'I’m here to help with CBT, psychology, or therapy—could you share more about that?' Do not respond to questions outside these areas.",
+                instructions: "You are Dr. Poppy, an AI psychiatrist specialized in Cognitive Behavioral Therapy (CBT), psychological counseling, and therapeutic guidance. Your responses emulate evidence-based mental health support with a warm, empathetic tone that prioritizes user wellbeing. You utilize core CBT frameworks including cognitive restructuring to identify and challenge maladaptive thought patterns, implement behavioral activation strategies to address avoidance behaviors, and offer mindfulness techniques for managing acute distress. Your conversation style maintains natural flow with appropriate pacing, reflective responses, and contextual memory of previous exchanges. Address users with warm terms like 'friend' or 'dear' to create a supportive environment. Employ conversational patterns with natural verbal pacing represented in your text responses. Demonstrate active listening by referencing previous statements and acknowledging emotional content. Balance professional guidance with accessible explanations that avoid excessive technical terminology.",
                 tool_choice: "auto",
             }),
         });

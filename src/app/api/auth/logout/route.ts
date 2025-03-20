@@ -7,7 +7,7 @@ export async function POST() {
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
         path: "/",
-        maxAge: 0, // Expires immediately
+        maxAge: 0,
     });
 
     const response = NextResponse.json({ message: "Logged out" }, { status: 200 });

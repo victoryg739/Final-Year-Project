@@ -34,7 +34,7 @@ const SymptomsSearch = () => {
       return;
     }
 
-    setError(""); // Reset the error state when description is valid
+    setError(""); 
     setLoading(true);
 
     try {
@@ -52,7 +52,6 @@ const SymptomsSearch = () => {
       });
 
       if (!response.ok) {
-        // Check if the response status is not OK and throw an error
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to fetch data from ChatGPT.");
       }
@@ -61,7 +60,6 @@ const SymptomsSearch = () => {
       sessionStorage.setItem("chatData", JSON.stringify(data));
       router.push("/chat");
     } catch (error) {
-      // Display specific error message based on where the error occurred
       if (error instanceof Error) {
         setError(`Something went wrong: ${error.message}`);
       } else {

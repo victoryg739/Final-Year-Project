@@ -15,7 +15,6 @@ const Navbar = () => {
       try {
         const res = await fetch("/api/auth/status");
         const data = await res.json();
-        console.log(data);
         setIsLoggedIn(data.isLoggedIn);
       } catch (error) {
         console.error("Error checking auth:", error);
@@ -37,7 +36,6 @@ const Navbar = () => {
     <nav className="bg-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
           <div className="flex items-center">
             <Image src={drPoppy} alt="Dr Poppy" width={50} height={50} className="bg-blue-300 p-1.5 rounded-3xl mr-2" />
             <span className="font-extrabold text-xl">Poppy AI</span>

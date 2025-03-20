@@ -7,14 +7,13 @@ export async function POST(req: NextRequest) {
     const apiKey = body.openAiApiKey || process.env.CHATGPT_API_KEY; // Use the key from the body or fallback to environment variable
 
 
-    // Create an instance of the OpenAI client with the API key
+
     const openai = new OpenAI({
-        apiKey: apiKey, // Pass the API key explicitly
+        apiKey: apiKey, 
     });
 
-    console.log(apiKey)
     try {
-        // Ensure 'gptMessages' is an array
+        
         if (!body.gptMessages || !Array.isArray(body.gptMessages)) {
             return NextResponse.json(
                 { error: "Invalid request. 'gptMessages' must be an array." },
@@ -22,9 +21,8 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        // Make a request to OpenAI's ChatGPT API
         const completion = await openai.chat.completions.create({
-            model: "gpt-4", // Correct model name (it was "gpt-4o" in the original code)
+            model: "gpt-4o",
             messages: body.gptMessages,
         });
 
